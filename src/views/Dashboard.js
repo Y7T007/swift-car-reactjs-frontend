@@ -180,6 +180,44 @@ function Dashboard() {
 
     fetchData();
   }, []);
+  const generateLast30Days = () => {
+    const last30Days = Array.from({length: 30}, (_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      return i === 0 ? 'Today' : `${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`;
+    });
+    return last30Days.reverse();
+  };
+
+  const [chartData2, setChartData2] = useState({
+    labels: generateLast30Days(),
+    datasets: [
+      {
+        label: "Reservations",
+        backgroundColor: "#f96332",
+        data: Array(30).fill(0), // Initial data
+      },
+    ],
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://swift-car-django-server-4c51acec5937.herokuapp.com/reservations/reservations-per-day');
+        const data = await response.json();
+
+        setChartData2((prevState) => {
+          const newDatasets = [...prevState.datasets];
+          newDatasets[0].data = data.reverse();
+          return { ...prevState, datasets: newDatasets };
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
 
   return (
@@ -234,13 +272,13 @@ function Dashboard() {
           <Col xs={12} md={6}>
             <Card className="card-chart">
               <CardHeader>
-                <h5 className="card-category">Email Statistics</h5>
-                <CardTitle tag="h4">24 Hours Performance</CardTitle>
+                <h5 className="card-category">30 dernier jours</h5>
+                <CardTitle tag="h4"> Nombre Reservations </CardTitle>
               </CardHeader>
               <CardBody>
                 <div className="chart-area">
                   <Bar
-                    data={dashboard24HoursPerformanceChart.data}
+                      data={chartData2}
                     options={dashboard24HoursPerformanceChart.options}
                   />
                 </div>
