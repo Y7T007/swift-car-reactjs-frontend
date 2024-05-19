@@ -4,23 +4,19 @@ import { CardBody } from 'reactstrap'; // Import CardBody from the appropriate l
 import Chart from 'chart.js/auto';
 
 const DashboardPanelChart = () => {
-    const generateLast12Months = () => {
-        const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-        const currentMonth = new Date().getMonth();
-        const last12Months = [];
-
-        for (let i = 0; i < 12; i++) {
-            const monthIndex = (currentMonth - i + 12) % 12;
-            last12Months.unshift(monthNames[monthIndex]);
-        }
-
-        return last12Months;
+    const generateLast4Weeks = () => {
+        const last4Weeks = Array.from({length: 4}, (_, i) => {
+            const d = new Date();
+            d.setDate(d.getDate() - i*7);
+            return i === 0 ? 'Cette Semaine' : `${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`;
+        });
+        return last4Weeks.reverse();
     };
     const [chartData, setChartData] = useState({
-        labels: generateLast12Months(),
+        labels: generateLast4Weeks(),
         datasets: [
             {
-                label: "Active Users",
+                label: "Reservations",
                 borderColor: "#f96332",
                 pointBorderColor: "#FFF",
                 pointBackgroundColor: "#f96332",
@@ -32,7 +28,7 @@ const DashboardPanelChart = () => {
                 backgroundColor: 'rgba(128, 182, 244, 0)', // Default color, will be replaced
                 borderWidth: 2,
                 tension: 0.4,
-                data: Array(12).fill(0), // Initial data
+                data: Array(4).fill(0), // Initial data
             },
         ],
     });
@@ -98,32 +94,14 @@ const DashboardPanelChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://swift-car-django-server-4c51acec5937.herokuapp.com/reservations/sum-prices-per-month');
+                const response = await fetch('https://swift-car-django-server-4c51acec5937.herokuapp.com/reservations/sum-prices-by-week');
                 const data = await response.json();
-
-                console.log('Fetched data:', data);
-
-                const updatedData = Array(12).fill(0);
-                for (let i = 0; i < data.length; i++) {
-                    updatedData[updatedData.length - data.length + i] = data[i];
-                }
 
                 setChartData((prevState) => {
                     const newDatasets = [...prevState.datasets];
-                    newDatasets[0].data = updatedData;
+                    newDatasets[0].data = data.reverse();
                     return { ...prevState, datasets: newDatasets };
                 });
-
-                if (chartRef.current) {
-                    const chart = chartRef.current.chartInstance;
-                    const ctx = chart.ctx;
-                    const gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-                    gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-                    gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
-                    chart.data.datasets[0].backgroundColor = gradientFill;
-                    chart.update();
-                }
-
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
