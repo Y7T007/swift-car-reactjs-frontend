@@ -35,21 +35,24 @@ const ManagersManagement = () => {
     };
 
     const handleAddManager = async (manager) => {
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
         try {
             const response = await fetch('https://swift-car-django-server-4c51acec5937.herokuapp.com/managers/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
+                    // Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(manager),
             });
+            console.log(JSON.stringify(manager))
             if (response.ok) {
+                console.log(JSON.stringify(manager))
                 fetchManagers();
                 setShowAddModal(false);
             }
         } catch (error) {
+            console.log(JSON.stringify(manager))
             console.error('Error:', error);
         }
     };
@@ -66,6 +69,8 @@ const ManagersManagement = () => {
                 body: JSON.stringify(manager),
             });
             if (response.ok) {
+                console.log('Manager updated successfully')
+                console.log(manager + " " + id)
                 fetchManagers();
                 setShowUpdateModal(false);
             }
@@ -78,7 +83,7 @@ const ManagersManagement = () => {
         const token = localStorage.getItem('token');
         try {
             const response = await fetch(`https://swift-car-django-server-4c51acec5937.herokuapp.com/managers/remove/${id}`, {
-                method: 'DELETE',
+                method: 'GET',
                 headers: { Authorization: `Bearer ${token}` },
             });
             if (response.ok) {
@@ -201,9 +206,10 @@ const AddManagerForm = ({ onSubmit }) => {
         contact_number: '',
         address: '',
         agence_id: '',
-        salary: '',
+        salary: 0,
         cin: '',
         email: '',
+        password:''
     });
 
     const handleChange = (e) => {
@@ -245,7 +251,7 @@ const AddManagerForm = ({ onSubmit }) => {
             </div>
             <div className="form-group">
                 <label>Agency ID</label>
-                <input type="text" name="agence_id" value={manager.agence_id} onChange={handleChange} className="form-control" required />
+                <input type="number" name="agence_id" value={manager.agence_id} onChange={handleChange} className="form-control" required />
             </div>
             <div className="form-group">
                 <label>Salary</label>
@@ -258,6 +264,10 @@ const AddManagerForm = ({ onSubmit }) => {
             <div className="form-group">
                 <label>Email</label>
                 <input type="email" name="email" value={manager.email} onChange={handleChange} className="form-control" required />
+            </div>
+            <div className="form-group">
+                <label>Password</label>
+                <input type="password" name="password" value={manager.password} onChange={handleChange} className="form-control" required />
             </div>
             <button type="submit" className="btn btn-primary">Submit</button>
         </form>
