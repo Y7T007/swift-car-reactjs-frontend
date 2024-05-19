@@ -1,9 +1,7 @@
 {
   "name": "now-ui-dashboard-react",
   "version": "1.5.2",
-  "main": "dist/index.js",
   "private": true,
-  "homepage": "https://demos.creative-tim.com/now-ui-dashboard-react/#/",
   "dependencies": {
     "@mui/base": "^5.0.0-beta.40",
     "@radix-ui/react-slot": "^1.0.2",
