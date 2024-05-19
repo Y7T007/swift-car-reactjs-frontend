@@ -29,49 +29,40 @@ function Footer(props) {
           <ul>
             <li>
               <a
-                href="https://www.creative-tim.com?ref=nudr-footer"
+                href="#"
                 target="_blank"
               >
-                Creative Tim
+                SwiftCar
               </a>
             </li>
             <li>
               <a
-                href="https://presentation.creative-tim.com?ref=nudr-footer"
+                href="https://github.com/y7t007"
                 target="_blank"
               >
-                About Us
+                Yassir WAHID (Y7T007)
               </a>
             </li>
             <li>
               <a
-                href="https://blog.creative-tim.com?ref=nudr-footer"
+                href="https://github.com/nossairSD"
                 target="_blank"
               >
-                Blog
+                Nossair SEDKI (nossairSD)
               </a>
             </li>
+            <li>
+              <a
+                href="https://github.com"
+                target="_blank"
+              >
+                Mohamed Amin El Metni
+              </a>
+            </li>
+
           </ul>
         </nav>
-        <div className="copyright">
-          &copy; {1900 + new Date().getYear()}, Designed by{" "}
-          <a
-            href="https://www.invisionapp.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Invision
-          </a>
-          . Coded by{" "}
-          <a
-            href="https://www.creative-tim.com?ref=nudr-footer"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Creative Tim
-          </a>
-          .
-        </div>
+
       </Container>
     </footer>
   );

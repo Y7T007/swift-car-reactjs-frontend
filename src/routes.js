@@ -25,28 +25,59 @@ import Upgrade from "views/Upgrade.js";
 import UserPage from "views/UserPage.js";
 import ManagersTable from "./views/ManagersTable";
 
-var dashRoutes = [
+function Signout() {
+
+  // Remove the 'token' from the local storage
+  localStorage.removeItem('swiftcar-token');
+  window.location.href = '/admin/dashboard';
+
+
+  return null;
+}
+
+
+import { withAuth } from './withAuth';
+import {SignIn} from "./views/SignIn";
+
+// Wrap the Dashboard component with the withAuth HOC
+// Wrap the components with the withAuth HOC
+const ProtectedDashboard = withAuth(Dashboard);
+const ProtectedManagersTable = withAuth(ManagersTable);
+
+// Use the protected components in your routes
+// Get the token from local storage
+const token = localStorage.getItem('swiftcar-token');
+
+// Define the routes
+var dashRoutes = token ? [
   {
     path: "/dashboard",
     name: "Dashboard",
     icon: "design_app",
-    component: <Dashboard />,
+    component: <ProtectedDashboard />,
     layout: "/admin",
   },
   {
     path: "/extended-tables",
     name: "Managers",
     icon: "users_single-02",
-    component: <ManagersTable />,
+    component: <ProtectedManagersTable />,
     layout: "/admin",
   },
   {
     path: "/Signout",
     name: "Signout",
     icon: "media-1_button-power",
-    component: <TableList />,
+    component: <Signout />,
     layout: "/admin",
   },
-
+] : [
+  {
+    path: "/SignIn",
+    name: "SignIn",
+    icon: "media-1_button-power",
+    component: <SignIn />,
+    layout: "/admin",
+  },
 ];
 export default dashRoutes;
