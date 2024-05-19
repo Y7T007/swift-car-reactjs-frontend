@@ -24,6 +24,7 @@ import "assets/scss/now-ui-dashboard.scss?v1.5.0";
 import "assets/css/demo.css";
 
 import AdminLayout from "layouts/Admin.js";
+import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
