@@ -59,11 +59,11 @@ function Sidebar(props) {
           </div>
         </a>
         <a
-          href="https://www.creative-tim.com?ref=nudr-sidebar"
+          href="https://github.com/y7t007"
           className="simple-text logo-normal"
           target="_blank"
         >
-          Creative Tim
+          SwiftCar
         </a>
       </div>
       <div className="sidebar-wrapper" ref={sidebar}>
