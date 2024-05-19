@@ -60,6 +60,12 @@ const ManagersManagement = () => {
     const handleUpdateManager = async (id, manager) => {
         const token = localStorage.getItem('token');
         try {
+            // Ensure salary and agency id are numbers
+            manager.salary = parseFloat(manager.salary);
+            manager.agence_id = parseInt(manager.agence_id);
+            delete manager._id;
+
+
             const response = await fetch(`https://swift-car-django-server-4c51acec5937.herokuapp.com/managers/update/${id}`, {
                 method: 'POST',
                 headers: {
@@ -70,7 +76,6 @@ const ManagersManagement = () => {
             });
             if (response.ok) {
                 console.log('Manager updated successfully')
-                console.log(manager + " " + id)
                 fetchManagers();
                 setShowUpdateModal(false);
             }
@@ -78,7 +83,6 @@ const ManagersManagement = () => {
             console.error('Error:', error);
         }
     };
-
     const handleDeleteManager = async (id) => {
         const token = localStorage.getItem('token');
         try {
