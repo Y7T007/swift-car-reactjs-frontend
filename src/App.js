@@ -23,12 +23,20 @@ import "bootstrap/dist/css/bootstrap.css";
 import "assets/scss/now-ui-dashboard.scss?v1.5.0";
 import "assets/css/demo.css";
 
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import AdminLayout from "layouts/Admin.js";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+function App() {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/admin/*" element={<AdminLayout />} />
+                <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+            </Routes>
+        </Router>
+    );
+}
 
-root.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-);
+export default App;
+
